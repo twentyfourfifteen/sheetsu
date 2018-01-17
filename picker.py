@@ -4,9 +4,11 @@ from update import *
 
 client = SheetsuClient("600798ca543a")
 
-#output = client.search(sheet="Sheet1")
-output = [{u'StudentId': u'101001', u'NameFirst': u'Zoe', u'Grade': u'4', u'NameLast': u'Smith'},{u'StudentId': u'101002', u'NameFirst': u'Max', u'Grade': u'2', u'NameLast': u'Smith'},{u'StudentId': u'101003', u'NameFirst': 'Owen', u'Grade': u'6', u'NameLast': u'Smith'}]
+with open('store.json', 'r') as outfile:
+    output = json.load(outfile)
 
+#output = client.search(sheet="Sheet1")
+#output = [{u'StudentId': u'101001', u'NameFirst': u'Zoe', u'Grade': u'4', u'NameLast': u'Smith'},{u'StudentId': u'101002', u'NameFirst': u'Max', u'Grade': u'2', u'NameLast': u'Smith'},{u'StudentId': u'101003', u'NameFirst': 'Owen', u'Grade': u'6', u'NameLast': u'Smith'}]
 
 class Student(object):
     def __init__(self, output):

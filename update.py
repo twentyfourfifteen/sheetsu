@@ -12,11 +12,9 @@ class Update(object):
         self.studentIds = []
         for x in output:
             self.studentIds.append(x['StudentId'])
-        print self.studentIds
         self.keys = []
         for x in output[0]:
             self.keys.append(x)
-        print self.keys
         self.action = action
         def add(self):
             newStudent = {}
@@ -37,7 +35,7 @@ class Update(object):
 
         if action == "add":
             add(self)
-        elif action == "update"
+        elif action == "update":
             update(self)
 
 
