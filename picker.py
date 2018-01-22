@@ -1,77 +1,65 @@
 from sheetsu import SheetsuClient
 import json
+from student import *
 from actions import *
 
-client = SheetsuClient("fa9ce8496310")
+clientStudent = SheetsuClient("fa9ce8496310")
+clientGrades = SheetsuClient("")
 
-debug = "true"
+debug = False
 
-if debug == "true":
+if debug:
     DataLocation = "local"
 
 def dataLocate():
     dl = raw_input("Local or Remote: ")
-    dl = dl[0]
-    dl = dl.lower()
-    if dl == "l":
-        return "local"
-    elif dl == "r":
+    dl = dl[0].lower()
+    if dl == "r":
         return "remote"
-    else:
-        print "try again"
-
+    else: return dl
 
 try:
     DataLocation
 except NameError:
     DataLocation = dataLocate()
 
-def getData(location):
+def getData(location,fileName,client):
+    fileName = fileName + '.json'
     if location == "remote":
         data = client.search(sheet="Sheet1")
-        with open('store.json', 'w') as outfile:
+        with open(fileName, 'w') as outfile:
             json.dump(data, outfile)
         return data
     else:
-        with open('store.json', 'r') as outfile:
+        with open(fileName, 'r') as outfile:
             data = json.load(outfile)
         return data
 
-output = getData(DataLocation)
+studentOutput = getData(DataLocation,"studentStore",clientStudent)
+#gradeOutput = getData(DataLocation,"gradeStore",clientGrades)
 
-class Student(object):
-    def __init__(self, output):
-        self.Fname = output['NameFirst']
-        self.Lname = output['NameLast']
-        self.studentId = output['StudentId']
-
-    def table(self):
-            text = self.studentId + " " + self.Lname + ", " + self.Fname
-            return text
-
+grades = {}
 students = {}
 i=0
-for x in output:
-    students[i] = Student(x)
+for x in studentOutput:
+    students[i] = Student(x,grades)
     i+=1
 
-
-
-def action(Action, output):
+def action(Action, studentOutput):
     Action = Action.lower()
     if Action == "list":
         listEm(students)
     elif Action == "lookup":
         lookup(students)
     elif Action == "add":
-        Update(output, "add")
+        Update(studentOutput, "add")
     elif Action == "delete":
-        Update(output, "delete")
+        Update(studentOutput, "delete")
     else:
         print "I haven't learned how to do that yet."
 
 Action = raw_input("What would you like to do:\nList, Lookup, Add or Delete? ")
-action(Action, output)
+action(Action, studentOutput)
 
 
 #if __name__ == '__main__':

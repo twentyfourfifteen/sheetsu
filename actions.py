@@ -1,25 +1,26 @@
 import json
 
 def listEm(students):
-    print "Student ID Last Name, First Name"
+    print "\nStudent ID Last Name, First Name"
     for x in students:
         print students[x].table()
+    print "\n"
 
 def lookup(students):
     Sname = raw_input("Lookup by last name: ")
-    print "Student ID Last Name, First Name"
-    
+    print "\nStudent ID Last Name, First Name"
     studentFilter = filter(lambda x: students[x].Lname.lower()==Sname.lower(), students)
     for x in studentFilter:
-        print students[x].table()
+        print students[x].tableGrades()
+    print "\n"
 
 class Update(object):
-    def __init__(self, output, action):
+    def __init__(self, studentOutput, action):
         self.studentIds = []
-        for x in output:
+        for x in studentOutput:
             self.studentIds.append(x['StudentId'])
         self.keys = []
-        for x in output[0]:
+        for x in studentOutput[0]:
             self.keys.append(x)
         self.action = action
         def add(self):
@@ -27,9 +28,9 @@ class Update(object):
             newFName = raw_input("New First Name? ")
             newLName = raw_input("New Last Name? ")
             newId = int(max(self.studentIds)) + 1
-    #    self.Fname = output['NameFirst']
-    #    self.Lname = output['NameLast']
-    #    self.studentId = output['StudentId']
+    #    self.Fname = studentOutput['NameFirst']
+    #    self.Lname = studentOutput['NameLast']
+    #    self.studentId = studentOutput['StudentId']
             newStudent["StudentId"] = newId
             writeOut(newStudent)
             print "We will add: %s %s with the ID: %s when the Admin gets back" % (newFName, newLName, newId)
