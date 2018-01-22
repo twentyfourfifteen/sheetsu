@@ -1,41 +1,67 @@
 from sheetsu import SheetsuClient
 import json
-from update import *
+from actions import *
 
-client = SheetsuClient("600798ca543a")
+client = SheetsuClient("fa9ce8496310")
 
-with open('store.json', 'r') as outfile:
-    output = json.load(outfile)
+def dataLocate():
+    dl = raw_input("Local or Remote: ")
+    dl = dl[0]
+    dl = dl.lower()
+    if dl == "l":
+        return "local"
+    elif dl == "r":
+        return "remote"
+    else:
+        print "try again"
 
-#output = client.search(sheet="Sheet1")
-#output = [{u'StudentId': u'101001', u'NameFirst': u'Zoe', u'Grade': u'4', u'NameLast': u'Smith'},{u'StudentId': u'101002', u'NameFirst': u'Max', u'Grade': u'2', u'NameLast': u'Smith'},{u'StudentId': u'101003', u'NameFirst': 'Owen', u'Grade': u'6', u'NameLast': u'Smith'}]
+try:
+    DataLocation
+except NameError:
+    DataLocation = dataLocate()
+    print DataLocation
 
-class Student(object):
-    def __init__(self, output):
-        self.Fname = output['NameFirst']
-        self.Lname = output['NameLast']
-        self.studentId = output['StudentId']
+def getData(location):
+    if location == "remote":
+        data = client.search(sheet="Sheet1")
+        with open('store.json', 'w') as outfile:
+            json.dump(data, outfile)
+        return data
+    else:
+        with open('store.json', 'r') as outfile:
+            data = json.load(outfile)
+        return data
 
-Sname = raw_input("Lookup by last name: ")
+output = getData(DataLocation)
 
-studentReturn = filter(lambda person: person['NameLast'].lower() == Sname.lower(), output)
+#class Student(object):
+#    def __init__(self, output):
+#        self.Fname = output['NameFirst']
+#        self.Lname = output['NameLast']
+#        self.studentId = output['StudentId']
 
-students = {}
-i=0
-for x in studentReturn:
-    students[i] = Student(x)
-    i+=1
-
-def table():
+def table(students):
     print "Student ID Last Name, First Name"
     for x in students:
         text = students[x].studentId + " " + students[x].Lname + ", " + students[x].Fname
         print text
 
-table()
+def action(Action, output):
+    Action = Action.lower()
+    if Action == "list":
+        print "List"
+    elif Action == "lookup":
+        lookup(output)
+    elif Action == "add":
+        Update(output, "add")
+    elif Action == "delete":
+        Update(output, "delete")
+    else:
+        print "I haven't learned how to do that yet."
 
-Action = raw_input("Add or Delete? ")
+Action = raw_input("What would you like to do? ")
 action(Action, output)
+
 
 #if __name__ == '__main__':
 #  main()
