@@ -4,6 +4,11 @@ from actions import *
 
 client = SheetsuClient("fa9ce8496310")
 
+debug = "true"
+
+if debug == "true":
+    DataLocation = "local"
+
 def dataLocate():
     dl = raw_input("Local or Remote: ")
     dl = dl[0]
@@ -14,6 +19,7 @@ def dataLocate():
         return "remote"
     else:
         print "try again"
+
 
 try:
     DataLocation
@@ -33,24 +39,30 @@ def getData(location):
 
 output = getData(DataLocation)
 
-#class Student(object):
-#    def __init__(self, output):
-#        self.Fname = output['NameFirst']
-#        self.Lname = output['NameLast']
-#        self.studentId = output['StudentId']
+class Student(object):
+    def __init__(self, output):
+        self.Fname = output['NameFirst']
+        self.Lname = output['NameLast']
+        self.studentId = output['StudentId']
 
-def table(students):
-    print "Student ID Last Name, First Name"
-    for x in students:
-        text = students[x].studentId + " " + students[x].Lname + ", " + students[x].Fname
-        print text
+    def table(self):
+            text = self.studentId + " " + self.Lname + ", " + self.Fname
+            return text
+
+students = {}
+i=0
+for x in output:
+    students[i] = Student(x)
+    i+=1
+
+
 
 def action(Action, output):
     Action = Action.lower()
     if Action == "list":
-        listEm(output)
+        listEm(students)
     elif Action == "lookup":
-        lookup(output)
+        lookup(students)
     elif Action == "add":
         Update(output, "add")
     elif Action == "delete":

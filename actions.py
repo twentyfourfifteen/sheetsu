@@ -1,36 +1,17 @@
 import json
 
-class Student(object):
-    def __init__(self, output):
-        self.Fname = output['NameFirst']
-        self.Lname = output['NameLast']
-        self.studentId = output['StudentId']
-
-def table(students):
+def listEm(students):
     print "Student ID Last Name, First Name"
     for x in students:
-        text = students[x].studentId + " " + students[x].Lname + ", " + students[x].Fname
-        print text
+        print students[x].table()
 
-def listEm(output):
-    students = {}
-    i=0
-    for x in output:
-        students[i] = Student(x)
-        i+=1
-    table(students)
-
-def lookup(output):
-
+def lookup(students):
     Sname = raw_input("Lookup by last name: ")
-    studentReturn = filter(lambda person: person['NameLast'].lower() == Sname.lower(), output)
-    students = {}
-    i=0
-    for x in studentReturn:
-        students[i] = Student(x)
-        i+=1
-
-    table(students)
+    print "Student ID Last Name, First Name"
+    
+    studentFilter = filter(lambda x: students[x].Lname.lower()==Sname.lower(), students)
+    for x in studentFilter:
+        print students[x].table()
 
 class Update(object):
     def __init__(self, output, action):
