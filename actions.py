@@ -1,20 +1,26 @@
 import json
 
-def list():
+class Student(object):
+    def __init__(self, output):
+        self.Fname = output['NameFirst']
+        self.Lname = output['NameLast']
+        self.studentId = output['StudentId']
+
+def table(students):
+    print "Student ID Last Name, First Name"
+    for x in students:
+        text = students[x].studentId + " " + students[x].Lname + ", " + students[x].Fname
+        print text
+
+def listEm(output):
     students = {}
     i=0
     for x in output:
         students[i] = Student(x)
         i+=1
-
     table(students)
 
 def lookup(output):
-    class Student(object):
-        def __init__(self, output):
-            self.Fname = output['NameFirst']
-            self.Lname = output['NameLast']
-            self.studentId = output['StudentId']
 
     Sname = raw_input("Lookup by last name: ")
     studentReturn = filter(lambda person: person['NameLast'].lower() == Sname.lower(), output)

@@ -19,7 +19,6 @@ try:
     DataLocation
 except NameError:
     DataLocation = dataLocate()
-    print DataLocation
 
 def getData(location):
     if location == "remote":
@@ -49,7 +48,7 @@ def table(students):
 def action(Action, output):
     Action = Action.lower()
     if Action == "list":
-        print "List"
+        listEm(output)
     elif Action == "lookup":
         lookup(output)
     elif Action == "add":
@@ -59,7 +58,7 @@ def action(Action, output):
     else:
         print "I haven't learned how to do that yet."
 
-Action = raw_input("What would you like to do? ")
+Action = raw_input("What would you like to do:\nList, Lookup, Add or Delete? ")
 action(Action, output)
 
 
