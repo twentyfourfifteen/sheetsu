@@ -4,7 +4,7 @@ from student import *
 from actions import *
 
 clientStudent = SheetsuClient("fa9ce8496310")
-clientGrades = SheetsuClient("")
+clientGrades = SheetsuClient("8efe1f243cb1")
 
 debug = False
 
@@ -36,13 +36,15 @@ def getData(location,fileName,client):
         return data
 
 studentOutput = getData(DataLocation,"studentStore",clientStudent)
-#gradeOutput = getData(DataLocation,"gradeStore",clientGrades)
+gradeOutput = getData(DataLocation,"gradeStore",clientGrades)
 
-grades = {}
+grades = gradeOutput
 students = {}
 i=0
 for x in studentOutput:
-    students[i] = Student(x,grades)
+    sid = str(x['StudentId'])
+    gradePass = filter(lambda r: r['StudentId']==sid,grades)
+    students[i] = Student(x,gradePass[0])
     i+=1
 
 def action(Action, studentOutput):
@@ -50,7 +52,7 @@ def action(Action, studentOutput):
     if Action == "list":
         listEm(students)
     elif Action == "lookup":
-        lookup(students)
+        lookup(students,)
     elif Action == "add":
         Update(studentOutput, "add")
     elif Action == "delete":
